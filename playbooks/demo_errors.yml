@@ -1,0 +1,12 @@
+---
+- hosts: "{{ servidores }}"
+  become: true
+  gather_facts: false
+  tasks:
+  - name: validar conexion web
+    uri:
+      url: "http://localhost"
+    ignore_errors: true
+  - name: mensaje de confirmacion
+    debug:
+      msg: "La tarea anterior ha funcionado o se ha saltado con un error."

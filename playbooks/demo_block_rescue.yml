@@ -1,0 +1,19 @@
+---
+- hosts: "{{ servidores }}"
+  become: true
+  gather_facts: false
+  tasks:
+  - name: validar conexion web
+    block:
+      - name: comprobacion de respuesta de la web
+        uri:
+          url: "http://localhost"
+    rescue:
+      - name: se asume que Apache esta parado, por lo que se levanta
+        service:
+          name: httpd
+          state: started
+    always:
+      - name: mensaje de confirmacion
+        debug:
+          msg: "La tarea anterior ha funcionado o se ha saltado con un error."

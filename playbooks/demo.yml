@@ -1,0 +1,24 @@
+---
+- hosts: "{{ servidores }}"
+  gather_facts: false # SE PUEDE USAR YES O NO
+  become: true # PERMISOS DE ADMINISTRADOR, para otro usuario se pone become_user
+  tasks:
+  - name: instalar Apache
+    package:
+      name: httpd
+      state: present
+  - name: iniciamos httpd y lo mantenemos persistente al reboot
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+  - name: creamos pagina de bienvenida
+    copy:
+      dest: /var/www/html/index.html
+      content: |
+        <html>
+          <body>
+            <h1>HOLA MUNDO</h1>
+            <p>FUNCIONO</p>
+          </body>
+        </html>
